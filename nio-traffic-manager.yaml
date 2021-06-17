@@ -6,32 +6,32 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-	  app: nio-traffic-manager
-  templates:
+      app: nio-traffic-manager
+  template:
     metadata:
-	  labels:
-	    app: nio-traffic-manager
+      labels:
+        app: nio-traffic-manager
     spec:
-	  containers:
-	  - name: nio-traffic-manager
-	    image: devnio/trafficmgr:1.5
-		imagePullPolicy: Never
-		env:
-		- name: SPRING_DATASOURCE_URL
-		  value: jdbc:mysql://mysql:3306/niotis
-		- name: OPENNESS_OAM_REGISTERSERVICE_URL
-		  value: https://172.27.54.15:30070/ngcoam/v1/af/services
-		- name: OPENNESS_AF_PFDS_URL
-		  value: https://172.27.54.15:30070/ngcoam/v1/pfd/transactions
-		- name: OPENNESS_AF_SUBSCRIPTION_URL
-		  value: https://172.27.54.15:30070/af/v1/subscriptions
-		- name: TRUST_LOCAL_STORE
-		  value: classpath:af.pem
-		ports:
-		- containerPort: 20080
-		  name: http-port
+      containers:
+      - name: nio-traffic-manager
+        image: devnio/trafficmgr:1.5
+        imagePullPolicy: Never
+        env:
+        - name: SPRING_DATASOURCE_URL
+          value: jdbc:mysql://mysql:3306/niotis
+        - name: OPENNESS_OAM_REGISTERSERVICE_URL
+          value: https://172.27.53.16:30070/ngcoam/v1/af/services
+        - name: OPENNESS_AF_PFDS_URL
+          value: https://172.27.53.16:30070/ngcoam/v1/pfd/transactions
+        - name: OPENNESS_AF_SUBSCRIPTION_URL
+          value: https://172.27.53.16:30070/af/v1/subscriptions
+        - name: TRUST_LOCAL_STORE
+          value: classpath:af.pem
+        ports:
+        - containerPort: 20080
+          name: http-port
 ---
-apiVersion: apps/v1
+apiVersion: v1
 kind: Service
 metadata:
   name: nio-traffic-manager
@@ -40,7 +40,7 @@ spec:
   - port: 20080
     nodePort: 31555
     targetPort: http-port
-	protocol: TCP
+    protocol: TCP
   selector:
     app: nio-traffic-manager
   type: NodePort
